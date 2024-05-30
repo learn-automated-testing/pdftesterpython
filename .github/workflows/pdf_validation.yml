@@ -1,0 +1,32 @@
+name: PDF Validation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate_pdf:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m venv pdf_test_env
+        source pdf_test_env/bin/activate
+        pip install pymupdf pillow numpy
+
+    - name: Run PDF validation script
+      run: |
+        source pdf_test_env/bin/activate
+        python validate_pdf.py
